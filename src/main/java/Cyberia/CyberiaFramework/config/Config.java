@@ -1,4 +1,4 @@
-package Cyberia.CyberiaFramework.util;
+package Cyberia.CyberiaFramework.config;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,6 +16,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
+import Cyberia.CyberiaFramework.util.CyberiaUtils;
 
 public class Config {
 	protected static String ConfigName;
@@ -27,7 +28,7 @@ public class Config {
 
 	public static final String SETTING_ELEMENT_STRING = "setting";
 
-	public static LinkedHashMap<String, ConfigBasicSetting> configMap = new LinkedHashMap<String, ConfigBasicSetting>();
+	public static ConfigStorage configStorage = new ConfigStorage();
 
 	public static void writeConfig() {
 
@@ -70,10 +71,10 @@ public class Config {
 
 			String xml = "";
 
-			for (ConfigBasicSetting setting : configMap.values()) {
+			for (ConfigBasicSetting setting : configStorage.getConfigValues()) {
 				Element settingElement = doc.createElement(SETTING_ELEMENT_STRING);
 				settingElement = setting.populateElement(doc, settingElement);
-				rootElement.appendChild(rootElement);
+				rootElement.appendChild(settingElement);
 			}
 			
 			xml += CyberiaUtils.docToXmlText(doc);

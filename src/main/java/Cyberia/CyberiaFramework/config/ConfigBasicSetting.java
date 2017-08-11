@@ -1,4 +1,4 @@
-package Cyberia.CyberiaFramework.util;
+package Cyberia.CyberiaFramework.config;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -44,6 +44,11 @@ public class ConfigBasicSetting {
 		settingElement.appendChild(settingValue);
 		
 		return settingElement;
+	}
+
+	public Object getSettingValue() {
+		// TODO Auto-generated method stub
+		return settingValue;
 	}
 	
 	
