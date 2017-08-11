@@ -19,7 +19,8 @@ import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
 import Cyberia.CyberiaFramework.util.CyberiaUtils;
 
 public class Config {
-	protected static String ConfigName;
+	//This should be changed
+	protected static String configName = "defaultConfig";
 
 	public static final String CONFIG_BASE_LOCATION = System.getProperty("user.home") + "/";
 	public static final String CONFIG_FILE_EXTENSION = ".cfg";
@@ -30,13 +31,15 @@ public class Config {
 
 	public static ConfigStorage configStorage = new ConfigStorage();
 
+	
+	
 	public static void writeConfig() {
 
 		BufferedWriter configWriter = null;
 		try {
-			String configLocation = CONFIG_BASE_LOCATION + ConfigName;
+			String configLocation = CONFIG_BASE_LOCATION + configName;
 			// add cfg file extension if not present.
-			if (!ConfigName.contains(CONFIG_FILE_EXTENSION))
+			if (!configName.contains(CONFIG_FILE_EXTENSION))
 				configLocation += CONFIG_FILE_EXTENSION;
 
 			configWriter = new BufferedWriter(new FileWriter(configLocation));
@@ -88,6 +91,17 @@ public class Config {
 		}
 		
 		return null;
+	}
+	
+	//Change Settings
+	/**
+	 * Change the filename of a config.
+	 * This needs to be done before creating Config Files
+	 * or attempting to load a config file.
+	 * @param configName the name of the config file, ex "myConfig"
+	 */
+	public static void setConfigName(String configName) {
+		Config.configName = configName;
 	}
 
 }
