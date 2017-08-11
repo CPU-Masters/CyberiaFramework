@@ -2,6 +2,8 @@ package Cyberia.CyberiaFramework.config;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class ConfigBasicSetting {
 
@@ -32,6 +34,7 @@ public class ConfigBasicSetting {
 		this.settingValue = settingValue;
 	}
 
+	//OVERRIDE THESE METHODS when making more complex settings.
 	public Element populateElement(Document doc, Element settingElement) {
 		
 		Element settingName = doc.createElement(SETTING_NAME_TAG);
@@ -46,10 +49,40 @@ public class ConfigBasicSetting {
 		return settingElement;
 	}
 
+	
+	
 	public Object getSettingValue() {
 		// TODO Auto-generated method stub
 		return settingValue;
 	}
+
+	public void loadFromNode(Node n) {
+		
+		NodeList nList = n.getChildNodes();
+		
+		for (int i = 0; i<nList.getLength();i++) {
+			Node node = nList.item(i);
+			//Case statement based on node name
+			switch (node.getNodeName()) {
+			
+			case (SETTING_NAME_TAG):
+				this.settingName = node.getTextContent();
+				break;
+			case (SETTING_VALUE_TAG):
+				this.settingValue = node.getTextContent();
+				
+			}
+			
+		}
+	}
+
+	public String getHumanReadableSetting() {
+		return this.settingName + " : " + this.settingValue;
+	}
+	
+	
+	
+	//End of override required methods
 	
 	
 }

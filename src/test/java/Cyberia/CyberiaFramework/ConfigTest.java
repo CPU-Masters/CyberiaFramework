@@ -25,10 +25,6 @@ public class ConfigTest extends TestCase {
 	
 	public void testConfigCreation() {
 		
-		
-		Config.configStorage.addConfigBasicSetting(setting1);
-		Config.configStorage.addConfigBasicSetting(setting2);
-		
 		String xmlOut = Config.getConfigXML();
 		
 		System.out.println(xmlOut);
@@ -42,10 +38,23 @@ public class ConfigTest extends TestCase {
 	}
 	
 	public void testConfigFileCreation() {
-		Config.configStorage.addConfigBasicSetting(setting1);
-		Config.configStorage.addConfigBasicSetting(setting2);
+
 		
 		Config.writeConfig();
+		
+	}
+	
+	public void testConfigRead() {
+		//just in case config has not been written
+		Config.writeConfig();
+		
+		Config.clearConfig();
+		
+		Config.readConfig();
+		
+		System.out.println(Config.configStorage.getHumanReadableConfig());
+		
+		assertEquals(Config.configStorage.getConfigValues().size() >=2, true);
 		
 	}
 }

@@ -14,6 +14,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
 import Cyberia.CyberiaFramework.util.CyberiaUtils;
@@ -32,15 +34,13 @@ public class Config {
 	public static ConfigStorage configStorage = new ConfigStorage();
 
 	
+	//Writing Config Files----------------------------------------------------------------------------------------------------------------
 	
 	public static void writeConfig() {
 
 		BufferedWriter configWriter = null;
 		try {
-			String configLocation = CONFIG_BASE_LOCATION + configName;
-			// add cfg file extension if not present.
-			if (!configName.contains(CONFIG_FILE_EXTENSION))
-				configLocation += CONFIG_FILE_EXTENSION;
+			String configLocation = getConfigPath();
 
 			configWriter = new BufferedWriter(new FileWriter(configLocation));
 
@@ -93,6 +93,64 @@ public class Config {
 		return null;
 	}
 	
+	//End Writing Config Files----------------------------------------------------------------------------------------------------------------
+	
+	public static void readConfig() {
+		try {
+			String configLocation = getConfigPath();
+			File configFile = new File(configLocation);
+			
+			DocumentBuilderFactory dbFactory 
+            = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(configFile);
+			
+			doc.getDocumentElement().normalize();
+			
+			NodeList nList = doc.getElementsByTagName(SETTING_ELEMENT_STRING);
+			
+			for (int i = 0; i<nList.getLength();i++) {
+				Node n = nList.item(i);
+				if (n.hasChildNodes()) {
+					//loading code may become more complex
+					ConfigBasicSetting configSetting = new ConfigBasicSetting();
+					configSetting.loadFromNode(n);
+					
+					addOrUpdateBasicSetting(configSetting);
+				}
+			}
+			
+			
+			
+		} catch (Exception e) {
+			CyberiaDebug.HandleException(e);
+		}
+		
+	}
+	
+	
+	
+
+	//Utility functions
+	public static String getConfigPath() {
+		String configLocation = CONFIG_BASE_LOCATION + configName;
+		// add cfg file extension if not present.
+		if (!configName.contains(CONFIG_FILE_EXTENSION))
+			configLocation += CONFIG_FILE_EXTENSION;
+		
+		return configLocation;
+	}
+	
+	public static void addOrUpdateBasicSetting(ConfigBasicSetting configSetting) {
+		configStorage.addConfigBasicSetting(configSetting);
+	}
+	
+	/**
+	 * Clears the config
+	 */
+	public static void clearConfig() {
+		configStorage.configMap.clear();
+	}
 	//Change Settings
 	/**
 	 * Change the filename of a config.

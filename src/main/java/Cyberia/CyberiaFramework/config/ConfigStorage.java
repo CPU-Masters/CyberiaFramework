@@ -3,6 +3,8 @@ package Cyberia.CyberiaFramework.config;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
+import org.omg.CORBA.Environment;
+
 /**
  * Holds Config Settings. Can be used for default configs or loaded configs.
  * @author josh.benton
@@ -24,6 +26,15 @@ public class ConfigStorage {
 	
 	public Collection<ConfigBasicSetting> getConfigValues() {
 		return configMap.values();
+	}
+	
+	public String getHumanReadableConfig() {
+		String output = "Config File Settings: " + getConfigValues().size() + System.lineSeparator();
+		for (ConfigBasicSetting setting : getConfigValues()) {
+			output += setting.getHumanReadableSetting() + System.lineSeparator();
+		}
+		
+		return output;
 	}
 	
 }
