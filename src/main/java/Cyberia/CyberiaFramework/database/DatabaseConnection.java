@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 public class DatabaseConnection {
 	public String databaseURL = "localhost/test?";
+	public String databaseName = "test";
 	public String databaseUser = "admin";
 	public String databasePass = "password";
 	
@@ -18,8 +19,8 @@ public class DatabaseConnection {
 	
 	try {
 	    conn =
-	       DriverManager.getConnection("jdbc:mysql://localhost/test?" +
-	                                   "user=minty&password=greatsqldb");
+	       DriverManager.getConnection("jdbc:mysql://"+databaseURL + "/" + databaseName + "?"+
+	                                   "user="+databaseUser+"&password="+databasePass);
 	    
 	    // Do something with the Connection
 
@@ -59,9 +60,6 @@ public class DatabaseConnection {
 	    
 	    return rs;
 	}
-	
-	
-	
 	
 	/*
 	 * ERROR HANDLING
