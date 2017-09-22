@@ -19,10 +19,9 @@ public class DatabaseTest extends TestCase {
 		dbConnection.databasePass = "password";
 		
 		dbConnection.connect();
+				
+		dbConnection.disconnect();
 		
-		//assertEquals();
-		
-		
-		
+		assert(true);
 	}
 }
