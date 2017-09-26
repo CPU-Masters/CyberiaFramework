@@ -1,5 +1,11 @@
 package Cyberia.CyberiaFramework.database.storage;
 
-public class DatabaseObject {
+import java.util.LinkedHashMap;
 
+public class DatabaseObject {
+	public LinkedHashMap<String,DatabaseField<?>> databaseFields = new LinkedHashMap<>();
+	
+	public void addDatabaseField(DatabaseField<?> d) {
+		databaseFields.put(d.dbName, d);
+	}
 }
