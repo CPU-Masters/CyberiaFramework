@@ -34,6 +34,9 @@ public class Config {
 	public static ConfigStorage configStorage = new ConfigStorage();
 
 	
+	//TODO read or write default (if config doesn't exist)
+	
+	
 	//Writing Config Files----------------------------------------------------------------------------------------------------------------
 	
 	public static void writeConfig() {

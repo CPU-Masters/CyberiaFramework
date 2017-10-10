@@ -19,4 +19,13 @@ public class CyberiaDebug {
 		//Hard Error, stops exception
 		e.printStackTrace();
 	}
+	
+	public static void HandleRestError(String error) {
+		System.out.println(error);
+	}
+
+	public static void output(String output) {
+		System.out.println(output);
+		
+	}
 }
