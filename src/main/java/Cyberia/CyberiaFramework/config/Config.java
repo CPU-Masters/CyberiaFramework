@@ -98,10 +98,19 @@ public class Config {
 	
 	//End Writing Config Files----------------------------------------------------------------------------------------------------------------
 	
+	/**
+	 * Attempts to read the config file if it exists.
+	 * if it doesn't it writes the config file first.
+	 */
 	public static void readConfig() {
 		try {
 			String configLocation = getConfigPath();
 			File configFile = new File(configLocation);
+			
+			if (!configFile.exists()) {
+				writeConfig();
+				configFile = new File(configLocation);
+			}
 			
 			DocumentBuilderFactory dbFactory 
             = DocumentBuilderFactory.newInstance();

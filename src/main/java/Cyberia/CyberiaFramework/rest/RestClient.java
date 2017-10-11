@@ -6,13 +6,15 @@ import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import javax.json.*;
+import javax.json.stream.JsonParser;
 
 import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
 
 public class RestClient {
 	
 	
-	public String username,password;
+	public String username,password,authUrl;
 	public String authToken;
 	
 	public void authenticate(String urlString,final String user,final String pass) {
@@ -33,7 +35,16 @@ public class RestClient {
 		 
 		CyberiaDebug.output("Response code: " + conn.getResponseCode());
 		CyberiaDebug.output("Response code: " + conn.getResponseMessage());
-		//TODO store url / user / pass for future authentications (?)
+		//store url / user / pass for future authentications (?)
+		this.authUrl = urlString;
+		this.username = user;
+		this.password = pass;
+		//parse auth token
+		String lToken = Json.createReader(conn.getInputStream()).readObject().getString("token");
+		
+		this.authToken = lToken;
+		
+		CyberiaDebug.output("Auth token: " + this.authToken);
 		
 		} catch (Exception e) {
 			CyberiaDebug.HandleException(e);

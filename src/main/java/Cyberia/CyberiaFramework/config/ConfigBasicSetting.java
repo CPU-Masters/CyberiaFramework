@@ -49,10 +49,14 @@ public class ConfigBasicSetting {
 		return settingElement;
 	}
 
+	public void setSettingValue(String settingValue) {
+		
+		this.settingValue = settingValue;
+	}
 	
 	
 	public Object getSettingValue() {
-		// TODO Auto-generated method stub
+		
 		return settingValue;
 	}
 
