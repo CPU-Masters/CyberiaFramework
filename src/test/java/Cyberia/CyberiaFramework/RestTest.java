@@ -1,5 +1,7 @@
 package Cyberia.CyberiaFramework;
 
+import javax.json.Json;
+
 import Cyberia.CyberiaFramework.config.Config;
 import Cyberia.CyberiaFramework.config.ConfigBasicSetting;
 import Cyberia.CyberiaFramework.rest.RestClient;
@@ -25,5 +27,10 @@ public class RestTest extends TestCase {
 		
 		RestClient rc = new RestClient();
 		rc.authenticate("https://api.robinhood.com/api-token-auth/", user, pass);
+		
+		//add to robinhood API later
+		System.out.println(
+		Json.createReader(rc.authGetRequest("https://api.robinhood.com/accounts/")).readObject()
+		);
 	}
 }
