@@ -8,6 +8,7 @@ import javax.json.JsonObject;
 
 import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
 import Cyberia.CyberiaFramework.rest.RestClient;
+import Cyberia.CyberiaFramework.util.codeGen.CodeGen;
 
 public class RobinhoodAccount {
 	public static final String AUTH_URL = "https://api.robinhood.com/api-token-auth/";
@@ -58,6 +59,10 @@ public class RobinhoodAccount {
 	
 	public void loadAccountDetails() {
 		JsonObject jsonObj = Json.createReader(RestClient.authGetRequest("https://api.robinhood.com/accounts/",authToken)).readObject();
+		
+		//make a java object from the json
+		
+		CodeGen.genClassForJson(jsonObj);
 		
 		
 	}
