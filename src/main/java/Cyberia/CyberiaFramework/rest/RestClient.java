@@ -84,6 +84,8 @@ public class RestClient {
 		}
 		return null;
 	}
+	
+
 	//Static methods
 	/**
 	 * Simple static get request. useable for services without 
@@ -110,5 +112,27 @@ public class RestClient {
 		}
 		return null;
 		
+	}
+	
+	public static InputStream authGetRequest(String urlString,String authToken) {
+		try {
+		URL url = new URL(""+urlString);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Authorization", "Token " + authToken);
+		conn.setRequestProperty("Accept", "application/json");
+		
+		
+		if (conn.getResponseCode()!=200) {
+			//failed to make a connection
+			CyberiaDebug.HandleRestError("authGetRequest got response : " + conn.getResponseMessage());
+			return null;
+		}
+		
+		return conn.getInputStream();
+		} catch (Exception e) {
+			CyberiaDebug.HandleException(e);
+		}
+		return null;
 	}
 }
