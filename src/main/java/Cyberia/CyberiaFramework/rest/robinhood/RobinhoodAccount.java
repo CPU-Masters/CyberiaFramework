@@ -57,13 +57,17 @@ public class RobinhoodAccount {
 		authenticate(username, password);
 	}
 	
+	/**
+	 * Loads the account details for a Robinhood account.
+	 * Must be called after authentication.
+	 */
 	public void loadAccountDetails() {
-		JsonObject jsonObj = Json.createReader(RestClient.authGetRequest("https://api.robinhood.com/accounts/",authToken)).readObject();
+		JsonObject jsonObj = Json.createReader(RestClient.authGetRequest("https://api.robinhood.com/accounts/",authToken)).readObject().get("results").asJsonObject();
 		
 		//make a java object from the json
-		
-		CodeGen.genClassForJson(jsonObj);
-		
+		System.out.println(jsonObj);
+		String code = CodeGen.genClassForJson(jsonObj);
+		System.out.println(code);
 		
 	}
 }

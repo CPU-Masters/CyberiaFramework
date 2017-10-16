@@ -1,6 +1,10 @@
 package Cyberia.CyberiaFramework.util.codeGen;
 
+import java.util.stream.Stream;
+
 import javax.json.JsonObject;
+
+import org.omg.CORBA.Environment;
 
 /**
  * This is a static class for generating code
@@ -9,13 +13,14 @@ import javax.json.JsonObject;
  */
 public class CodeGen {
 	
-	public static void genClassForJson(JsonObject jsonObj) {
-		jsonObj.entrySet().forEach(x -> {
-			CodeGenVar var;
-			var = new CodeGenVar(x.getKey(),x.getValue());
-			
-			
-		});
+	public static String genClassForJson(JsonObject jsonObj) {
+		
+		String codeGen = "";
+		Stream<CodeGenVar> CodeGenVars = jsonObj.entrySet().stream().map(
+				x -> new CodeGenVar(x.getKey(),x.getValue()));
+		
+		codeGen = CodeGenVars.map(x -> x.getVarDefine()).reduce((i,j) -> i+System.lineSeparator()+j).get();
+		return codeGen;
 	}
 
 	/**
@@ -50,8 +55,9 @@ public class CodeGen {
 		public String getVarDefine() {
 			String rtrn = "Public " + varType + " " + varName;
 			if (varDefaultValue != null && !varDefaultValue.isEmpty()) {
-				rtrn += " = " + this.getDefaultValue();
-				//ADD QUOTES for string
+				
+				rtrn += " = " + this.getDefaultValue();//ADD QUOTES for string
+				
 			}
 				rtrn += ";" + System.lineSeparator();
 			
