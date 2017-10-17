@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.mysql.cj.api.jdbc.JdbcConnection;
+import com.mysql.cj.jdbc.PreparedStatement;
+
 public class DatabaseConnection {
 	private static final String INFORMATION_SCHEMA_TABLES = "information_schema.tables";
 	public String databaseURL = "localhost/test?";
@@ -71,7 +74,7 @@ public class DatabaseConnection {
 	}
 	
 	public boolean containsTable(String tableName) {
-		String query = "select * from " + INFORMATION_SCHEMA_TABLES;
+		String query = "select 1 from " + INFORMATION_SCHEMA_TABLES;
 		query += " where table_schema = '" + databaseName + "' AND ";
 		query += " table_name = '" + tableName + "'";
 		query += " Limit 1";
@@ -84,12 +87,27 @@ public class DatabaseConnection {
 		}
 		return last;
 	}
+	/**
+	 * Generates a new prepared statement for use
+	 * @return a prepared statement for the given table
+	 */
+	public PreparedStatement genPreparedStatement(String tableName) {
+		try {
+			return new PreparedStatement((JdbcConnection) conn,tableName);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			handleError(e);
+			return null;
+		}
+	}
 	/*
 	 * ERROR HANDLING
 	 */
 	public void handleError(SQLException e) {
 		e.printStackTrace();
 	}
+
+	
 
 
 

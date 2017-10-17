@@ -54,20 +54,9 @@ public class DatabaseField<T> {
 	
 	public PreparedStatement getTableInsertionPreparedStatement(int i,PreparedStatement statement) {
 		try {
-			/*
-		if (value.getClass().isInstance(Integer.class)){
-			statement.setInt(i, (Integer)value);
-		} else if (value.getClass().isInstance(java.sql.Date.class)){
-			statement.setDate(i, (java.sql.Date) value);
-		} else {
-		*/
 			statement.setObject(i, value);
 			
 			return statement;
-			//This should just be a warning if it converts to string
-			//throw new UnsupportedOperationException("Class Type: " + value.getClass() + " is not supported by Cyberia Framework");
-		
-		//}
 		
 		} catch (SQLException e) {
 			CyberiaDebug.HandleException(e);

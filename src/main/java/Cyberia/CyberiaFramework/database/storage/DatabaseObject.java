@@ -2,10 +2,13 @@ package Cyberia.CyberiaFramework.database.storage;
 
 import java.util.LinkedHashMap;
 
+import com.mysql.cj.jdbc.PreparedStatement;
+
 import Cyberia.CyberiaFramework.database.DatabaseConnection;
 
 public abstract class DatabaseObject {
 	public LinkedHashMap<String,DatabaseField<?>> databaseFields = new LinkedHashMap<>();
+	
 	public void addDatabaseField(DatabaseField<?> d) {
 		databaseFields.put(d.dbName, d);
 	}
@@ -33,8 +36,16 @@ public abstract class DatabaseObject {
 		}
 		
 		}
+		//TODO add support for modifing a table schema
 		
 		//if the table exists, check to make sure it has all the proper columns
 		//if not add the column
+	}
+	
+	public void store() {
+		PreparedStatement stmt = getDatabaseConnection().genPreparedStatement(getTableName());
+		
+		databaseFields.values().stream().forEach(x -> x.getTableInsertionPreparedStatement(stmt));
+		
 	}
 }
