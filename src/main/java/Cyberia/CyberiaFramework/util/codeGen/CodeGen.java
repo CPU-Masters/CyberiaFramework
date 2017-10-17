@@ -19,7 +19,8 @@ public class CodeGen {
 		Stream<CodeGenVar> CodeGenVars = jsonObj.entrySet().stream().map(
 				x -> new CodeGenVar(x.getKey(),x.getValue()));
 		
-		codeGen = CodeGenVars.map(x -> x.getVarDefine()).reduce((i,j) -> i+System.lineSeparator()+j).get();
+		codeGen += CodeGenVars.map(x -> x.getVarDefine()).reduce((i,j) -> i+System.lineSeparator()+j).get();
+		
 		return codeGen;
 	}
 

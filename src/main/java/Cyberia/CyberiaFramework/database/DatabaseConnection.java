@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseConnection {
+	private static final String INFORMATION_SCHEMA_TABLES = "information_schema.tables";
 	public String databaseURL = "localhost/test?";
 	public String databaseName = "test";
 	public String databaseUser = "admin";
@@ -47,24 +48,50 @@ public class DatabaseConnection {
 	 * @param query - the select query
 	 * @return The ResultSet or null
 	 */
-	public ResultSet SimpleQuery(String query) {
+	public ResultSet simpleQuery(String query) {
 		Statement stmt;
 		ResultSet rs = null;
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(query);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			handleError(e);
 		}
 	    
 	    return rs;
 	}
+	public void simpleExecute(String statement) {
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(statement);
+		} catch (SQLException e) {
+			handleError(e);
+		}
+	}
 	
+	public boolean containsTable(String tableName) {
+		String query = "select * from " + INFORMATION_SCHEMA_TABLES;
+		query += " where table_schema = '" + databaseName + "' AND ";
+		query += " table_name = '" + tableName + "'";
+		query += " Limit 1";
+		boolean last;
+		try {
+			last = simpleQuery(query).last();
+		} catch (SQLException e) {
+			handleError(e);
+			last = false;
+		}
+		return last;
+	}
 	/*
 	 * ERROR HANDLING
 	 */
 	public void handleError(SQLException e) {
 		e.printStackTrace();
 	}
+
+
+
+
 }

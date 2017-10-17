@@ -2,6 +2,7 @@ package Cyberia.CyberiaFramework;
 
 import Cyberia.CyberiaFramework.config.Config;
 import Cyberia.CyberiaFramework.database.DatabaseConnection;
+import Cyberia.CyberiaFramework.database.storage.DatabaseObject;
 import junit.framework.TestCase;
 
 public class DatabaseTest extends TestCase {
@@ -19,9 +20,27 @@ public class DatabaseTest extends TestCase {
 		dbConnection.databasePass = "password";
 		
 		dbConnection.connect();
+		
+		//attempt to store an object
+		
 				
 		dbConnection.disconnect();
 		
 		assert(true);
+	}
+	
+	public class DatabaseTestObj extends DatabaseObject {
+		public DatabaseConnection dbConnection;
+		@Override
+		public String getTableName() {
+			// TODO Auto-generated method stub
+			return "dbTestObj";
+		}
+
+		@Override
+		public DatabaseConnection getDatabaseConnection() {
+			return dbConnection;
+		}
+		
 	}
 }
