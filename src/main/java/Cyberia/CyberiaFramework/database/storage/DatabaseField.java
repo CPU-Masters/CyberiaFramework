@@ -54,17 +54,6 @@ public class DatabaseField<T> {
 	public String getInsertFields() {
 		return dbName;
 	}
-	public PreparedStatement getTableInsertionPreparedStatement(int i,PreparedStatement statement) {
-		try {
-			statement.setObject(i, value);
-			
-			return statement;
-		
-		} catch (SQLException e) {
-			CyberiaDebug.HandleException(e);
-		}
-		return null;
-	}
 
 	/* ----------------------------------------------------------------------------------------
 	 * Getters / Setters
