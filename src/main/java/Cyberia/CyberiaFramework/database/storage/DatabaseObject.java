@@ -1,5 +1,6 @@
 package Cyberia.CyberiaFramework.database.storage;
 
+import java.sql.SQLException;
 import java.util.LinkedHashMap;
 
 import com.mysql.cj.jdbc.PreparedStatement;
@@ -36,16 +37,33 @@ public abstract class DatabaseObject {
 		}
 		
 		}
-		//TODO add support for modifing a table schema
+		//TODO add support for modifying a table schema
 		
 		//if the table exists, check to make sure it has all the proper columns
 		//if not add the column
 	}
-	
-	public void store() {
-		PreparedStatement stmt = getDatabaseConnection().genPreparedStatement(getTableName());
+	public String getInsertStatement() {
+		String fields = "(";
+		//Must be an ordered collection for this to work
+		fields += databaseFields.values().stream().map(x -> x.getInsertFields()).reduce((i,j) -> i + "," + j);
+		fields += ") values (";
 		
-		databaseFields.values().stream().forEach(x -> x.getTableInsertionPreparedStatement(stmt));
+		fields += databaseFields.values().stream().map(x -> "?").reduce((i,j) -> i + "," + j);
+		fields += ")";
+		return fields;
+	}
+	public void store() {
+		PreparedStatement stmt = getDatabaseConnection().genPreparedStatement(getTableName(),this);
+		int i = 0;
+		for (DatabaseField<?> df : databaseFields.values()) {
+			i++;
+			try {
+				stmt.setObject(i, df.getDbValue());
+			} catch (SQLException e) {
+				DatabaseConnection.handleError(e);
+			}
+		}
+
 		
 	}
 }

@@ -51,7 +51,9 @@ public class DatabaseField<T> {
 	public String getTableCreationString() {
 		return dbName + " " + mySqlType;
 	}
-	
+	public String getInsertFields() {
+		return dbName;
+	}
 	public PreparedStatement getTableInsertionPreparedStatement(int i,PreparedStatement statement) {
 		try {
 			statement.setObject(i, value);
@@ -62,6 +64,21 @@ public class DatabaseField<T> {
 			CyberiaDebug.HandleException(e);
 		}
 		return null;
+	}
+
+	/* ----------------------------------------------------------------------------------------
+	 * Getters / Setters
+	 * ----------------------------------------------------------------------------------------
+	 */
+	/**
+	 * Gets the database version of the object
+	 * by default this is the same object,
+	 * but if you needed to do some sort of conversion
+	 * you would override this method.
+	 * @return value
+	 */
+	public Object getDbValue() {
+		return value;
 	}
 	
 	

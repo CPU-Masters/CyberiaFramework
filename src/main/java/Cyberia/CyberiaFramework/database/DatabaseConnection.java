@@ -9,6 +9,8 @@ import java.sql.Statement;
 import com.mysql.cj.api.jdbc.JdbcConnection;
 import com.mysql.cj.jdbc.PreparedStatement;
 
+import Cyberia.CyberiaFramework.database.storage.DatabaseObject;
+
 public class DatabaseConnection {
 	private static final String INFORMATION_SCHEMA_TABLES = "information_schema.tables";
 	public String databaseURL = "localhost/test?";
@@ -91,11 +93,19 @@ public class DatabaseConnection {
 	 * Generates a new prepared statement for use
 	 * @return a prepared statement for the given table
 	 */
-	public PreparedStatement genPreparedStatement(String tableName) {
+	public PreparedStatement genPreparedStatement(String tableName,DatabaseObject dbo) {
 		try {
-			return new PreparedStatement((JdbcConnection) conn,tableName);
+			//TODO implement prepared statement cache
+			java.sql.PreparedStatement prepStmt;// = new PreparedStatement((JdbcConnection) conn,tableName);
+			
+			
+			String insertStatement  = "replace into " + tableName;
+			insertStatement += dbo.getInsertStatement();
+			
+			prepStmt = conn.prepareStatement(insertStatement);
+			
+			return prepStmt;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			handleError(e);
 			return null;
 		}
@@ -103,7 +113,7 @@ public class DatabaseConnection {
 	/*
 	 * ERROR HANDLING
 	 */
-	public void handleError(SQLException e) {
+	public static void handleError(SQLException e) {
 		e.printStackTrace();
 	}
 
