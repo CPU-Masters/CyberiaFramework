@@ -11,11 +11,11 @@ import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
  */
 public class FunctionGen {
 
-	private static final String ADD = "+";
-	private static final String SUBTRACT = "-";
-	private static final String MULT = "*";
-	private static final String DIV = "/";
-	private static final String MOD = "%";
+	public static final String ADD = "+";
+	public static final String SUBTRACT = "-";
+	public static final String MULT = "*";
+	public static final String DIV = "/";
+	public static final String MOD = "%";
 	//Constants for operations
 	public static ArrayList<String> singleOps = new ArrayList<>();
 	static {
@@ -27,8 +27,18 @@ public class FunctionGen {
 		
 	}
 	//actual execution
-	
-	public Double process(ArrayList<MathOp<Double>> ops) {
+	public static Double process(ArrayList<FunctionalOp<Double>> functions, ArrayList<Double> args) {
+		ArrayList<MathOp<Double>> ops = new ArrayList<>();
+		//create ArrayList of ops
+		functions.stream().map(x -> {
+			MathOp<Double> o = new MathOp<Double>();
+			o.load(x,args);
+			return o;
+		});
+		
+		return process(ops);
+	}
+	public static Double process(ArrayList<MathOp<Double>> ops) {
 		ArrayList<Double> results = new ArrayList<>();
 		
 		for(MathOp<Double> o : ops) {
@@ -43,13 +53,14 @@ public class FunctionGen {
 			} else {
 				val2 = o.val2;
 			}
+			//System.out.println(val1 + o.op + val2);
 			results.add(op(val1,val2,o.op));
 		}
 		
 		return results.get(results.size()-1);
 	}
 	//TODO duplicate code for floats / doubles
-	public Double op(Double x,Double y, String op) {
+	public static Double op(Double x,Double y, String op) {
 		switch (op) {
 		case (ADD):
 			return x + y;
@@ -63,13 +74,18 @@ public class FunctionGen {
 			return x % y;
 		}
 		CyberiaDebug.output("INVALID OP: " + op);
-		return 0;
+		return 0.0;
 	}
 	
 	//program code generation
 	
+	//generation of functions?
+	public static void SimpleFunctionGen(ArrayList<Double> vals) {
+		//generates 
+	}
+	
 	//helper classes
-	public class MathOp<T> {
+	public static class MathOp<T> {
 		/**
 		 * The result to reference
 		 */
@@ -81,9 +97,41 @@ public class FunctionGen {
 		public MathOp() {
 			
 		}
-		public MathOp(T val1,T val2) {
+		public void load(FunctionalOp<T> function,ArrayList<T> parameters) {
+			switch (function.val1Ref) {
+			case (function.CONST):
+				this.val1 = function.val1Const;
+			break;
+			case (function.INPUT):
+				this.val1 = parameters.get(function.val1Pointer);
+			break;
+			case (function.RESULT):
+				this.result1 = function.val1Pointer;
+			break;
+			}
+			
+			switch (function.val2Ref) {
+			case (function.CONST):
+				this.val2 = function.val2Const;
+			break;
+			case (function.INPUT):
+				this.val2 = parameters.get(function.val2Pointer);
+			break;
+			case (function.RESULT):
+				this.result2 = function.val2Pointer;
+			break;
+			}
+			
+		}
+		public MathOp(T val1,T val2,String op) {
 			this.val1 = val1;
 			this.val2 = val2;
+			this.op = op;
+		}
+		public MathOp(String op,Integer r1,Integer r2) {
+			this.result1 = r1;
+			this.result2 = r2;
+			this.op = op;
 		}
 		public void setVal1(T v) {
 			this.val1 = v;
@@ -100,5 +148,31 @@ public class FunctionGen {
 		public void setOp(String op) {
 			this.op = op;
 		}
+	}
+	
+	/**
+	 * Generates MathOps
+	 * Holds a position in an arraylist or a result and an operation
+	 * This is essentially a single function. make more complex functions
+	 * by tossing this in an arraylist.
+	 * @author josh.benton
+	 *
+	 */
+	public static class FunctionalOp<T> {
+		
+		public static final int CONST = 0;
+		public static final int INPUT = 0;
+		public static final int RESULT = 0;
+		public static ArrayList<Integer> REFS = new ArrayList<>();
+		static {
+			REFS.add(CONST);
+			REFS.add(INPUT);
+			REFS.add(RESULT);
+		}
+		public int val1Ref = 0;
+		public int val2Ref = 0;
+		public T val1Const,val2Const;
+		public int val1Pointer,val2Pointer;
+		
 	}
 }

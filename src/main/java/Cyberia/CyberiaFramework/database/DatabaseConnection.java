@@ -93,7 +93,7 @@ public class DatabaseConnection {
 	 * Generates a new prepared statement for use
 	 * @return a prepared statement for the given table
 	 */
-	public PreparedStatement genPreparedStatement(String tableName,DatabaseObject dbo) {
+	public java.sql.PreparedStatement genPreparedStatement(String tableName,DatabaseObject dbo) {
 		try {
 			//TODO implement prepared statement cache
 			java.sql.PreparedStatement prepStmt;// = new PreparedStatement((JdbcConnection) conn,tableName);

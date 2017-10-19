@@ -53,7 +53,7 @@ public abstract class DatabaseObject {
 		return fields;
 	}
 	public void store() {
-		PreparedStatement stmt = getDatabaseConnection().genPreparedStatement(getTableName(),this);
+		java.sql.PreparedStatement stmt = getDatabaseConnection().genPreparedStatement(getTableName(),this);
 		int i = 0;
 		for (DatabaseField<?> df : databaseFields.values()) {
 			i++;
