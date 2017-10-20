@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Cyberia.CyberiaFramework.util.codeGen.logicGen.FunctionGen;
 import Cyberia.CyberiaFramework.util.codeGen.logicGen.FunctionGen.FunctionalOp;
 import Cyberia.CyberiaFramework.util.codeGen.logicGen.FunctionGen.MathOp;
+import Cyberia.CyberiaFramework.util.codeGen.logicGen.FunctionGenFactory;
 import junit.framework.TestCase;
 
 public class GenTest extends TestCase {
@@ -46,6 +47,14 @@ public class GenTest extends TestCase {
 		Double fr1 = FunctionGen.process(fops, paramsTest);
 		Double fr2 = FunctionGen.process(fops, paramsTest2);
 		System.out.println(fr1 + " | " + fr2);
+		
+		
+		//test pure random gen
+		for (int i=0;i<10;i++) {
+			Double prgR = FunctionGen.process(FunctionGenFactory.pureRandomGen(paramsTest2),paramsTest2);
+			System.out.println(prgR);
+		}
+		
 		
 	}
 }

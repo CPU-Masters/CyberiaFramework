@@ -205,5 +205,11 @@ public class FunctionGen {
 			this.val2Ref = RESULT;
 			this.val2Pointer = i;
 		}
+		
+		public String toString() {
+			return operation + " : "
+					+ val1Ref + " ( " + val1Const + " | " + val1Pointer + " ) "
+					+ val2Ref + " ( " + val2Const + " | " + val2Pointer + " ) ";
+		}
 	}
 }
