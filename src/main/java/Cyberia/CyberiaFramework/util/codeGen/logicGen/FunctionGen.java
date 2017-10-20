@@ -1,6 +1,7 @@
 package Cyberia.CyberiaFramework.util.codeGen.logicGen;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
 
@@ -30,11 +31,11 @@ public class FunctionGen {
 	public static Double process(ArrayList<FunctionalOp<Double>> functions, ArrayList<Double> args) {
 		ArrayList<MathOp<Double>> ops = new ArrayList<>();
 		//create ArrayList of ops
-		functions.stream().map(x -> {
+		ops = (ArrayList<MathOp<Double>>) functions.stream().map(x -> {
 			MathOp<Double> o = new MathOp<Double>();
 			o.load(x,args);
 			return o;
-		});
+		}).collect(Collectors.toList());
 		
 		return process(ops);
 	}
@@ -98,26 +99,28 @@ public class FunctionGen {
 			
 		}
 		public void load(FunctionalOp<T> function,ArrayList<T> parameters) {
+			
+			this.op = function.operation;
 			switch (function.val1Ref) {
-			case (function.CONST):
+			case (FunctionalOp.CONST):
 				this.val1 = function.val1Const;
 			break;
-			case (function.INPUT):
+			case (FunctionalOp.INPUT):
 				this.val1 = parameters.get(function.val1Pointer);
 			break;
-			case (function.RESULT):
+			case (FunctionalOp.RESULT):
 				this.result1 = function.val1Pointer;
 			break;
 			}
 			
 			switch (function.val2Ref) {
-			case (function.CONST):
+			case (FunctionalOp.CONST):
 				this.val2 = function.val2Const;
 			break;
-			case (function.INPUT):
+			case (FunctionalOp.INPUT):
 				this.val2 = parameters.get(function.val2Pointer);
 			break;
-			case (function.RESULT):
+			case (FunctionalOp.RESULT):
 				this.result2 = function.val2Pointer;
 			break;
 			}
@@ -161,8 +164,8 @@ public class FunctionGen {
 	public static class FunctionalOp<T> {
 		
 		public static final int CONST = 0;
-		public static final int INPUT = 0;
-		public static final int RESULT = 0;
+		public static final int INPUT = 1;
+		public static final int RESULT = 2;
 		public static ArrayList<Integer> REFS = new ArrayList<>();
 		static {
 			REFS.add(CONST);
@@ -173,6 +176,34 @@ public class FunctionGen {
 		public int val2Ref = 0;
 		public T val1Const,val2Const;
 		public int val1Pointer,val2Pointer;
+		public String operation;
 		
+		public FunctionalOp(String operation) {
+			this.operation = operation;
+		}
+		public void setCVal1(T conValue) {
+			this.val1Ref = CONST;
+			this.val1Const = conValue;
+		}
+		public void setCVal2(T conValue) {
+			this.val2Ref = CONST;
+			this.val2Const = conValue;
+		}
+		public void setARef1(int i) {
+			this.val1Ref = INPUT;
+			this.val1Pointer = i;
+		}
+		public void setARef2(int i) {
+			this.val2Ref = INPUT;
+			this.val2Pointer = i;
+		}
+		public void setRRef1(int i) {
+			this.val1Ref = RESULT;
+			this.val1Pointer = i;
+		}
+		public void setRRef2(int i) {
+			this.val2Ref = RESULT;
+			this.val2Pointer = i;
+		}
 	}
 }
