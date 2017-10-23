@@ -161,7 +161,7 @@ public class FunctionGenFactory {
 			}
 			break;
 		case (FunctionalOp.RESULT):
-			//TODO to improve this to use only independent calculations
+			//TODO have an option to use only independent calculations ?
 			Integer resultVal = rand.nextInt(i);
 		if (spot == 0) {
 			fop.val1Pointer = resultVal;
