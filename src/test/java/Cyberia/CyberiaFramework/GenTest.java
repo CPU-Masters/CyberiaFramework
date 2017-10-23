@@ -50,7 +50,7 @@ public class GenTest extends TestCase {
 		
 		
 		//test pure random gen
-		for (int i=0;i<10;i++) {
+		for (int i=0;i<1000;i++) {
 			Double prgR = FunctionGen.process(FunctionGenFactory.pureRandomGen(paramsTest2),paramsTest2);
 			System.out.println(prgR);
 		}

@@ -101,7 +101,7 @@ public class FunctionGen {
 		public void load(FunctionalOp<T> function,ArrayList<T> parameters) {
 			
 			this.op = function.operation;
-			switch (function.val1Ref) {
+			switch (function.val1RefType) {
 			case (FunctionalOp.CONST):
 				this.val1 = function.val1Const;
 			break;
@@ -113,7 +113,7 @@ public class FunctionGen {
 			break;
 			}
 			
-			switch (function.val2Ref) {
+			switch (function.val2RefType) {
 			case (FunctionalOp.CONST):
 				this.val2 = function.val2Const;
 			break;
@@ -172,8 +172,8 @@ public class FunctionGen {
 			REFS.add(INPUT);
 			REFS.add(RESULT);
 		}
-		public int val1Ref = 0;
-		public int val2Ref = 0;
+		public int val1RefType = 0;
+		public int val2RefType = 0;
 		public T val1Const,val2Const;
 		public int val1Pointer,val2Pointer;
 		public String operation;
@@ -182,34 +182,34 @@ public class FunctionGen {
 			this.operation = operation;
 		}
 		public void setCVal1(T conValue) {
-			this.val1Ref = CONST;
+			this.val1RefType = CONST;
 			this.val1Const = conValue;
 		}
 		public void setCVal2(T conValue) {
-			this.val2Ref = CONST;
+			this.val2RefType = CONST;
 			this.val2Const = conValue;
 		}
 		public void setARef1(int i) {
-			this.val1Ref = INPUT;
+			this.val1RefType = INPUT;
 			this.val1Pointer = i;
 		}
 		public void setARef2(int i) {
-			this.val2Ref = INPUT;
+			this.val2RefType = INPUT;
 			this.val2Pointer = i;
 		}
 		public void setRRef1(int i) {
-			this.val1Ref = RESULT;
+			this.val1RefType = RESULT;
 			this.val1Pointer = i;
 		}
 		public void setRRef2(int i) {
-			this.val2Ref = RESULT;
+			this.val2RefType = RESULT;
 			this.val2Pointer = i;
 		}
 		
 		public String toString() {
 			return operation + " : "
-					+ val1Ref + " ( " + val1Const + " | " + val1Pointer + " ) "
-					+ val2Ref + " ( " + val2Const + " | " + val2Pointer + " ) ";
+					+ val1RefType + " ( " + val1Const + " | " + val1Pointer + " ) "
+					+ val2RefType + " ( " + val2Const + " | " + val2Pointer + " ) ";
 		}
 	}
 }
