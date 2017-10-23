@@ -2,6 +2,7 @@ package Cyberia.CyberiaFramework;
 
 import Cyberia.CyberiaFramework.config.Config;
 import Cyberia.CyberiaFramework.database.DatabaseConnection;
+import Cyberia.CyberiaFramework.database.storage.DatabaseField;
 import Cyberia.CyberiaFramework.database.storage.DatabaseObject;
 import junit.framework.TestCase;
 
@@ -22,7 +23,8 @@ public class DatabaseTest extends TestCase {
 		dbConnection.connect();
 		
 		//attempt to store an object
-		
+		DatabaseTestObj testobj1 = new DatabaseTestObj();
+		testobj1.name.set("x");
 				
 		dbConnection.disconnect();
 		
@@ -31,6 +33,7 @@ public class DatabaseTest extends TestCase {
 	
 	public class DatabaseTestObj extends DatabaseObject {
 		public DatabaseConnection dbConnection;
+		public DatabaseField<String> name = new DatabaseField<String>("testName", DatabaseField.VAR_CHAR, "", this);
 		@Override
 		public String getTableName() {
 			// TODO Auto-generated method stub

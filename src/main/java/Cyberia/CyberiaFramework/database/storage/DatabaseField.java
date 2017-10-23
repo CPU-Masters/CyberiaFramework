@@ -16,13 +16,15 @@ import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
  */
 public class DatabaseField<T> {
 
+	public static final String VAR_CHAR = "varchar(255)";
+	
+	
 	String dbName;
 	String mySqlType;
 	T defaultValue;
 	DatabaseObject dbObject;
 	//ACTUAL VALUE
 	T value;
-	
 	
 	/**
 	 * Creates a field that becomes a column in a database
@@ -43,6 +45,7 @@ public class DatabaseField<T> {
 		dbObject.addDatabaseField(this);
 		
 	}
+	
 	
 	/* ----------------------------------------------------------------------------------------
 	 * SQL Generation
@@ -68,6 +71,10 @@ public class DatabaseField<T> {
 	 */
 	public Object getDbValue() {
 		return value;
+	}
+
+	public void set(T val) {
+		this.value = val;
 	}
 	
 	

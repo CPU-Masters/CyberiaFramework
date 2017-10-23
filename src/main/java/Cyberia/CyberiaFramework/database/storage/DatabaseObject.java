@@ -8,6 +8,10 @@ import com.mysql.cj.jdbc.PreparedStatement;
 import Cyberia.CyberiaFramework.database.DatabaseConnection;
 
 public abstract class DatabaseObject {
+	
+	//TODO primary key support
+	public String primaryKey;
+	
 	public LinkedHashMap<String,DatabaseField<?>> databaseFields = new LinkedHashMap<>();
 	
 	public void addDatabaseField(DatabaseField<?> d) {
