@@ -23,8 +23,14 @@ public class DatabaseTest extends TestCase {
 		dbConnection.connect();
 		
 		//attempt to store an object
+		
 		DatabaseTestObj testobj1 = new DatabaseTestObj();
+		testobj1.dbConnection = dbConnection;
+		testobj1.genTable();
+		
 		testobj1.name.set("x");
+		
+		testobj1.store();
 				
 		dbConnection.disconnect();
 		
@@ -32,11 +38,10 @@ public class DatabaseTest extends TestCase {
 	}
 	
 	public class DatabaseTestObj extends DatabaseObject {
-		public DatabaseConnection dbConnection;
-		public DatabaseField<String> name = new DatabaseField<String>("testName", DatabaseField.VAR_CHAR, "", this);
+		public  DatabaseConnection dbConnection;
+		public DatabaseField<String> name = new DatabaseField<String>("testName", DatabaseField.VAR_CHAR, "", this, true);
 		@Override
 		public String getTableName() {
-			// TODO Auto-generated method stub
 			return "dbTestObj";
 		}
 

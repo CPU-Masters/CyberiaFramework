@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import com.mysql.cj.jdbc.PreparedStatement;
 
 import Cyberia.CyberiaFramework.database.DatabaseConnection;
+import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
 
 public abstract class DatabaseObject {
 	
@@ -32,9 +33,22 @@ public abstract class DatabaseObject {
 			String tableCreationString = "Create Table ";
 			tableCreationString += getTableName();
 			// add variables
-			databaseFields.values().stream()
+			
+			String varCreation = "("+ databaseFields.values().stream()
 			.map(x -> x.getTableCreationString())
-			.reduce((i,j) -> i + "," + j);
+			.reduce((i,j) -> i + "," + j).get();
+			
+			
+			if (databaseFields.values().stream().filter(x -> x.primaryKey==true).count() >= 2) {
+				//multiple primary keys
+				varCreation += ",CONSTRAINT PK_Gen_"+this.getTableName()+" PRIMARY KEY ("+databaseFields.values().stream().filter(x -> x.primaryKey==true).map(x -> x.dbName).reduce((i,j) -> i + ","+j).get() + ")";
+			} else if (databaseFields.values().stream().filter(x -> x.primaryKey==true).count() >= 1) {
+				varCreation += ", PRIMARY KEY ("+databaseFields.values().stream().filter(x -> x.primaryKey==true).map(x -> x.dbName).reduce((i,j) -> i + ","+j).get() + ")";
+			}
+			varCreation += ")";
+			tableCreationString += varCreation;
+			
+			CyberiaDebug.output(tableCreationString);
 			
 			getDatabaseConnection().simpleExecute(tableCreationString);
 			
