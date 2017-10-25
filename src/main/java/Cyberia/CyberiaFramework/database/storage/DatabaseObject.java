@@ -63,25 +63,26 @@ public abstract class DatabaseObject {
 	public String getInsertStatement() {
 		String fields = "(";
 		//Must be an ordered collection for this to work
-		fields += databaseFields.values().stream().map(x -> x.getInsertFields()).reduce((i,j) -> i + "," + j);
+		fields += databaseFields.values().stream().map(x -> x.getInsertFields()).reduce((i,j) -> i + "," + j).get();
 		fields += ") values (";
 		
-		fields += databaseFields.values().stream().map(x -> "?").reduce((i,j) -> i + "," + j);
+		fields += databaseFields.values().stream().map(x -> "?").reduce((i,j) -> i + "," + j).get();
 		fields += ")";
 		return fields;
 	}
 	public void store() {
 		java.sql.PreparedStatement stmt = getDatabaseConnection().genPreparedStatement(getTableName(),this);
 		int i = 0;
+		try {
 		for (DatabaseField<?> df : databaseFields.values()) {
 			i++;
-			try {
-				stmt.setObject(i, df.getDbValue());
-			} catch (SQLException e) {
-				DatabaseConnection.handleError(e);
-			}
+			stmt.setObject(i, df.getDbValue());
 		}
-
 		
+		stmt.execute();
+
+		} catch (SQLException e) {
+			DatabaseConnection.handleError(e);
+		}
 	}
 }

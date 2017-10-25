@@ -10,6 +10,7 @@ import com.mysql.cj.api.jdbc.JdbcConnection;
 import com.mysql.cj.jdbc.PreparedStatement;
 
 import Cyberia.CyberiaFramework.database.storage.DatabaseObject;
+import Cyberia.CyberiaFramework.debugging.CyberiaDebug;
 
 public class DatabaseConnection {
 	private static final String INFORMATION_SCHEMA_TABLES = "information_schema.tables";
@@ -101,6 +102,8 @@ public class DatabaseConnection {
 			
 			String insertStatement  = "replace into " + tableName;
 			insertStatement += dbo.getInsertStatement();
+			
+			CyberiaDebug.output(insertStatement);
 			
 			prepStmt = conn.prepareStatement(insertStatement);
 			
